@@ -312,3 +312,117 @@ Y ya podemos comprobar.
 ---
 
 ## 5. Crear sitio web ***empleados.miEmpresa.com***
+
+Finalmente vamos a crear el sitio ***empleados.miEmpresa.com*** utilizando validación de usuario para su respectiva carpeta o sitio.
+
+Para empezar, accedemos a la ruta `C:\repcan` con el comando `cd` y creamos las carpetas `comun`, `david`, `alejandro` y `alexander`. Utilizaremos el comando `mkdir` y comprobamos con el comando `tree` :
+
+![5](./img/61.png)
+
+Vamos a `IIS -> Server -> Sitios`, le damos a `Nuevo sitio web...` y creamos el sitio `empleados` con los siguientes parámetros:
+
+![5](./img/62.png)
+
+Luego en el sitio `empleados`, le damos a `Acciones -> Editar permisos -> Opciones avanzadas`:
+
+![5](./img/63.png)
+
+Y le damos a `Deshabilitar herencia`. Borramos todas las herencias:
+
+![5](./img/64.png)
+
+Una vez hecho, vamos a `Administrador del servidor -> Herramientas -> Usuarios y equipos de AD`:
+
+![5](./img/65.png)
+
+Vamos a `Users`, le damos clic derecho y seleccionamos `Nuevo -> Grupo`:
+
+![5](./img/66.png)
+
+Creamos el grupo `empleados`:
+
+![5](./img/67.png)
+
+Seguimos en `Users`, le damos clic derecho y seleccionamos `Nuevo -> Usuario`:
+
+![5](./img/68.png)
+
+Y creamos los usuarios `david`, `alexander` y `alejandro`:
+
+![5](./img/69.png)
+
+Ponemos contraseña a cada usuario:
+
+![5](./img/70.png)
+
+Y el resultado debe verse así:
+
+![5](./img/71.png)
+
+Le damos clic derecho a los usuarios creados y le damos a `Agregar a un grupo`. Los agregamos al grupo `empleados`:
+
+![5](./img/73.png)
+
+Comprobamos el grupo `empleados` desde `Propiedades -> Miembros`:
+
+![5](./img/72.png)
+
+Ahora vamosa a `DNS -> Server -> ZBD` y creamos un dominio nuevo y le agregamos sus respectivos hosts y alias:
+
+![5](./img/74.png)
+
+Volvemos a `IIS -> Server -> Sitios -> empleados -> Autenticación`, deshabilitamos autenticación anónima y habilitamos autenticación básica:
+
+![5](./img/76.png)
+
+Ahora preparamos la estructura del sitio web y le damos clic derecho en las carpetas de los usuarios y le damos a `Propiedades`:
+
+![5](./img/77.png)
+
+Le damos a `Opciones avanzadas`:
+
+![5](./img/78.png)
+
+Cambiamos el propietario:
+
+![5](./img/79.png)
+
+Ponemos de propietario el grupo `empleados`:
+
+![5](./img/80.png)
+
+Ahora le damos a `Agregar`:
+
+![5](./img/81.png)
+
+Agregammos el `usuario` de la carpeta y le ponemos permisos de `Control total`:
+
+![5](./img/82.png)
+
+Debería verse así:
+
+![5](./img/83.png)
+
+Hay que hacer lo mismo con cada carpeta. En el caso de la carpeta común, poner de propietario el grupo y entidad de seguridad `empleados`.
+
+Finalmente abrimos el navegador web y en el cuadro de búsqueda buscamos `www.empleados.miEmpresa.com` y nos saldrá un index de chequeo de empleados. Sólo se podrá acceder a la carpeta el usuario de la misma, por lo que pedirá usuario y contraseña (exepto la carpeta común, que todos tienen acceso a él):
+
+![5](./img/84.png)
+
+Al loguearse correctamente, se abrirá su sitio web.
+
+* David:
+
+  ![5](./img/85.png)
+
+* Alejandro:
+
+  ![5](./img/86.png)
+
+* Alexander:
+
+  ![5](./img/87.png)
+
+* Común:
+
+  ![5](./img/88.png)
