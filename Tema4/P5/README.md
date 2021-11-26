@@ -475,4 +475,115 @@ Y si todo ha salido bien, podemos acceder a las bases de datos MySQL:
 
 ---
 
-## 8. Plataforma Drupal
+## 8. Plataforma WordPress
+
+Ahora vamos a crear un Virtual Host alojado a un CMS, en nuestro caso, WordPress.
+
+### 8.1. Descargar WordPress
+
+Para empezar accedemos al directorio donde vamos a descargar el fichero WordPress. Luego obtenemos el fichero de manera online con el comando `wget -c http://wordpress.org/latest.tar.gz`. Una vez descargado, comprobamos que se ha descargado con el comando `ls -la`:
+
+![8.62](./img/62.png)
+
+Descomprimimos el fichero descargado con el comando `tar -xzvf latest.tar.gz`:
+
+![8.63](./img/63.png)
+
+Comprobamos que se ha descomprimido y se ha creado la carpeta `wordpress`:
+
+![8.64](./img/64.png)
+
+### 8.2. Configuración
+
+Creamos el directorio `/var/www/html/misitio.com` y copiamos todo el contenido de la carpeta descomprimida a la carpeta que acabamos de crear con el comando `cp -R wordpress/* /var/www/html/misitio.com` (requiere usuario ***root***):
+
+![8.65](./img/65.png)
+
+Le cambiamos los permisos y el propietario del directorio con los siguientes comandos:
+
+~~~
+sudo chown -R www-data:www-data /var/www/html/mysite.com
+sudo chmod -R 775 /var/www/html/mysite.com
+~~~
+
+Luego comprobamos:
+
+![8.66](./img/66.png)
+
+Creamos y modificamos el fichero de configuración `/etc/apache2/sites-available/misitio.com.conf` y le agregamos el siguiente contenido:
+
+~~~
+<VirtualHost *:80>
+	ServerName www.misitio.com
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html/misitio.com
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+~~~
+
+Debería quedar así:
+
+![8.71](./img/71.png)
+
+Verificamos la sintaxis de Apache con el comando `apache2ctl -t`. Si está todo bien, creamos el enlace para habilitar el sitio con el comando `a2ensite misitio.com.conf` (requiere usuario ***root***) y reiniciamos el servicio Apache:
+
+![8.72](./img/72.png)
+
+Desabilitamos el sitio por defecto con el comando `a2dissite 000-default.conf` (requiere usuario ***root***):
+
+![8.73](./img/73.png)
+
+### 8.3. Crear usuario y base de datos MySQL
+
+Ahora accedemos a MySQL con el usuario ***root*** (`mysql -u root -p`) y creamos una nueva base de datos con la orden `CREATE DATABASE misitio;`:
+
+![8.67](./img/67.png)
+
+Le ponemos todos los privilegios al usuario `misitioadmin` y le ponemos una contraseña con la orden `GRANT ALL PRIVILEGES ON misitio.* TO 'misitioadmin'@'localhost' IDENTIFIED BY 'contraseña'`:
+
+![8.68](./img/68.png)
+
+Modificamos el fichero `wp-config-sample.php` y modificamos lo siguiente:
+
+![8.70](./img/70.png)
+
+### 8.4. Instalación
+
+Si todo lo hemos hecho bien. Al ir al navegador e introducir `www.misitio.com/index.php`, debería salir la instalación de WordPress. Si es así, seleccionamos el idioma de instalación:
+
+![8.74](./img/74.png)
+
+Nos dará un mensaje de bienvenida y requisito de instalación. Seguimos:
+
+![8.75](./img/75.png)
+
+Rellenamos los siguientes campos para que wordpress se conecte a la base de datos que hemos creado:
+
+![8.77](./img/77.png)
+
+Al conectarse, nos indicará que rellenemos la información necesaria para el sitio web, rellenamos e instalamos WordPress:
+
+![8.78](./img/78.png)
+
+Finalmente nos saldrá un mensaje de que la instalación se realizó correctamente:
+
+![8.79](./img/79.png)
+
+### 8.5. Comprobación
+
+Le damos a acceder y pondremos el usuario y contraseña WordPress:
+
+![8.80](./img/80.png)
+
+Si todo ha salido bien, tendremos acceso a la administración del cms:
+
+![8.81](./img/81.png)
+
+Si escribimos `www.misitio.com` nos saldrá nuestra página web:
+
+![8.82](./img/82.png)
+
+Finalmente podemos retocar un poco nuestro sitio y publicarlo:
+
+![8.83](./img/83.png)
