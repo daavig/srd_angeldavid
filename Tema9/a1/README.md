@@ -2,6 +2,10 @@
 
 ---
 
+## Trabajo realizado por Ayoze Hernández y Ángel David González Quintana
+
+---
+
 ## Índice
 
 
